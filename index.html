@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Trend Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Student Performance Trend Tool</h1>
+
+        <label>Enter number of marks:</label>
+        <input type="number" id="count" min="2">
+
+        <label>Enter marks (space separated):</label>
+        <input type="text" id="marks" placeholder="e.g. 40 50 60 70">
+
+        <button onclick="analyze()">Check Trend</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function analyze() {
+            let input = document.getElementById("marks").value.trim();
+            let arr = input.split(" ").map(Number);
+
+            if (arr.length < 2) {
+                document.getElementById("result").innerHTML = "Enter at least 2 marks";
+                return;
+            }
+
+            let increasing = true;
+            let decreasing = true;
+
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (arr[i] < arr[i + 1]) decreasing = false;
+                else if (arr[i] > arr[i + 1]) increasing = false;
+                else {
+                    increasing = false;
+                    decreasing = false;
+                }
+            }
+
+            let trend = "Mixed 🔀";
+            if (increasing) trend = "Increasing 📈";
+            else if (decreasing) trend = "Decreasing 📉";
+
+            let max = Math.max(...arr);
+            let min = Math.min(...arr);
+            let avg = arr.reduce((a, b) => a + b, 0) / arr.length;
+
+            document.getElementById("result").innerHTML = `
+                <h3>Result</h3>
+                Trend: ${trend} <br>
+                Highest: ${max} <br>
+                Lowest: ${min} <br>
+                Average: ${avg.toFixed(2)}
+            `;
+        }
+    </script>
+
+</body>
+
+</html>
